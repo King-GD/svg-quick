@@ -11,7 +11,8 @@
     "bin"
   ],
   "scripts": {
-    "start": "node bin/cli.js"
+    "start": "node bin/cli.js",
+    "check": "prettier --check ."
   },
   "repository": {
     "type": "git",
