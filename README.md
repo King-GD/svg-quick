@@ -5,6 +5,7 @@
 ## 🤔 为什么选择 svg-quick? (Why svg-quick?)
 
 在现代前端项目中，管理和使用 SVG 图标常常面临诸多挑战：
+
 - **性能问题**: 大量独立的 SVG 文件会导致过多的 HTTP 请求。
 - **打包效率**: 在大型项目中，每次构建都实时处理上百个 SVG 会拖慢构建速度。
 - **体积问题**: 作为 React/Vue 组件直接导入会增加额外的运行时代码，导致产物体积膨胀。
@@ -56,13 +57,14 @@ my-project/
 
 ## ⚙️ 命令行参数 (API)
 
-| 参数 | 简写 | 描述 | 可选值 | 默认值 |
-| :--- | :--- | :--- | :--- | :--- |
-| `--input` | `-i` | 包含源 SVG 文件的目录。 | (路径) | **必需** |
-| `--output` | `-o` | 生成产物模块的输出目录。 | (路径) | **必需** |
-| `--mode` | `-m` | 输出模式。 | `all`(a), `treeshakeable`(t), `full`(f) | `all` |
+| 参数       | 简写 | 描述                     | 可选值                                  | 默认值   |
+| :--------- | :--- | :----------------------- | :-------------------------------------- | :------- |
+| `--input`  | `-i` | 包含源 SVG 文件的目录。  | (路径)                                  | **必需** |
+| `--output` | `-o` | 生成产物模块的输出目录。 | (路径)                                  | **必需** |
+| `--mode`   | `-m` | 输出模式。               | `all`(a), `treeshakeable`(t), `full`(f) | `all`    |
 
 **模式 (Mode) 详解:**
+
 - `treeshakeable` (`t`): **（推荐）** 只生成支持按需打包的独立导出。最终产物体積最小。
 - `full` (`f`): 只生成包含所有图标的全量对象和辅助函数。适用于需要动态获取图标的场景。
 - `all` (`a`): 同时生成以上两种模式的文件，提供最大灵活性。
@@ -80,10 +82,7 @@ import { user, arrowLeft } from '../generated-icons';
 
 // React 示例:
 const Icon = ({ svgString, ...props }) => (
-  <span
-    {...props}
-    dangerouslySetInnerHTML={{ __html: svgString }}
-  />
+  <span {...props} dangerouslySetInnerHTML={{ __html: svgString }} />
 );
 
 const App = () => (
@@ -93,6 +92,7 @@ const App = () => (
   </div>
 );
 ```
+
 当打包工具构建你的应用时，只有被 `import` 的 `user` 和 `arrowLeft` 图标会被包含进来。
 
 ## 📄 许可证 (License)
