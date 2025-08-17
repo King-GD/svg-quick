@@ -1,0 +1,37 @@
+{
+  "name": "svg-quick",
+  "version": "1.0.0",
+  "description": "A lightweight CLI tool that quickly packages your SVG icon folders into efficient, tree-shakeable JavaScript/TypeScript modules.",
+  "main": "bin/cli.js",
+  "type": "module",
+  "bin": {
+    "svg-quick": "bin/cli.js"
+  },
+  "files": [
+    "bin"
+  ],
+  "scripts": {
+    "start": "node bin/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/King-GD/svg-quick.git"
+  },
+  "keywords": [
+    "svg",
+    "icon",
+    "bundler",
+    "cli",
+    "optimizer",
+    "svgo",
+    "tree-shaking"
+  ],
+  "author": "King-GD",
+  "license": "MIT",
+  "dependencies": {
+    "glob": "^11.0.3",
+    "prettier": "^3.6.2",
+    "svgo": "^4.0.0",
+    "yargs": "^18.0.0"
+  }
+}
