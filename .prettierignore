@@ -1,0 +1,14 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+lib
+
+# Package manager lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# GitHub Actions workflows (optional, but good practice)
+.github/
