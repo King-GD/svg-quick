@@ -65,20 +65,20 @@ my-project/
 
 **模式 (Mode) 详解:**
 
-- `treeshakeable` (`t`): **（推荐）** 生成支持按需打包的独立导出，同时包含实用工具函数 (`getIconData`, `getIconSrc`)。支持 Tree-shaking，最终产物体積最小。
-- `full` (`f`): 只生成包含所有图标的全量对象和实用工具函数 (`getIconData`, `getIconSrc`)。所有图标都会被打包，适用于需要在运行时动态访问大量图标的场景。
+- `treeshakeable` (`t`): **（推荐）** 生成支持按需打包的独立图标导出。支持完美的 Tree-shaking，最终产物体積最小。
+- `full` (`f`): 生成包含所有图标的全量对象和实用工具函数 (`getIconData`, `getIconSrc`)。所有图标都会被打包，适用于需要在运行时动态访问大量图标的场景。
 - `all` (`a`): 同时生成以上两种模式的文件，提供最大灵活性。
 
-> **💡 提示**: 两种模式都包含相同的实用工具函数。区别在于：
+> **💡 重要提示**:
 >
-> - `treeshakeable` 模式：支持按需导入单个图标，打包工具只会包含你实际使用的图标
-> - `full` 模式：所有图标都会被打包到最终产物中，但提供了统一的 `icons` 对象用于动态访问
+> - `treeshakeable` 模式：只包含独立的图标导出，支持完美的按需打包，打包工具只会包含你实际使用的图标
+> - `full` 模式：包含完整的 `icons` 对象和工具函数 (`getIconData`, `getIconSrc`)，所有图标都会被打包，但提供动态访问能力
 
 ## 📖 产物使用示例 (Using the Output)
 
-当 `mode` 设置为 `treeshakeable` (推荐) 时，你可以这样使用：
+### Treeshakeable 模式 (推荐)
 
-### 方式一：直接导入具体图标（推荐）
+当 `mode` 设置为 `treeshakeable` 时，你可以这样使用：
 
 ```javascript
 // 在你的 React / Vue / Svelte 组件中
@@ -100,7 +100,11 @@ const App = () => (
 );
 ```
 
-### 方式二：使用实用工具函数
+**优势**: 打包工具构建你的应用时，只有被 `import` 的 `user` 和 `arrowLeft` 图标会被包含进来，实现完美的按需打包。
+
+### Full 模式
+
+当 `mode` 设置为 `full` 时，你可以使用实用工具函数：
 
 ```javascript
 // 导入实用工具函数，支持动态获取图标
@@ -123,10 +127,10 @@ const iconUrl = getIconSrc('user');
 // background-image: url(data:image/svg+xml;base64,...)
 ```
 
-### 方式三：在 ECharts 中使用图标
+### 在 ECharts 中使用图标 (需要 Full 模式)
 
 ```javascript
-// 导入 ECharts 和图标工具函数
+// 导入 ECharts 和图标工具函数 (需要使用 full 模式生成)
 import * as echarts from 'echarts';
 import { getIconSrc } from '../generated-icons';
 
@@ -195,12 +199,12 @@ const option = {
   ],
 };
 
-// 初始化图表
+// 初始化图标
 const chart = echarts.init(document.getElementById('chart'));
 chart.setOption(option);
 ```
 
-当打包工具构建你的应用时，只有被 `import` 的图标和函数会被包含进来，实现完美的按需打包。
+> **注意**: ECharts 中的动态图标使用需要 `full` 模式，因为需要 `getIconSrc` 工具函数。如果你只需要在 ECharts 中使用少量固定图标，也可以考虑使用 `treeshakeable` 模式直接导入图标字符串。
 
 ## 📄 许可证 (License)
 
