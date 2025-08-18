@@ -70,6 +70,7 @@ my-project/
 - `all` (`a`): 同时生成以上两种模式的文件，提供最大灵活性。
 
 > **💡 提示**: 两种模式都包含相同的实用工具函数。区别在于：
+>
 > - `treeshakeable` 模式：支持按需导入单个图标，打包工具只会包含你实际使用的图标
 > - `full` 模式：所有图标都会被打包到最终产物中，但提供了统一的 `icons` 对象用于动态访问
 
@@ -132,24 +133,29 @@ import { getIconSrc } from '../generated-icons';
 // 在 ECharts 配置中使用图标
 const option = {
   // 1. 在系列数据中使用图标作为 symbol
-  series: [{
-    type: 'scatter',
-    data: [
-      { value: [10, 20], symbol: getIconSrc('user') },
-      { value: [30, 40], symbol: getIconSrc('star') },
-    ],
-    symbolSize: 30
-  }],
+  series: [
+    {
+      type: 'scatter',
+      data: [
+        { value: [10, 20], symbol: getIconSrc('user') },
+        { value: [30, 40], symbol: getIconSrc('star') },
+      ],
+      symbolSize: 30,
+    },
+  ],
 
   // 2. 在图例中使用自定义图标
   legend: {
-    data: [{
-      name: '用户数据',
-      icon: getIconSrc('user')
-    }, {
-      name: '收藏数据',
-      icon: getIconSrc('star')
-    }]
+    data: [
+      {
+        name: '用户数据',
+        icon: getIconSrc('user'),
+      },
+      {
+        name: '收藏数据',
+        icon: getIconSrc('star'),
+      },
+    ],
   },
 
   // 3. 在工具箱中使用自定义图标
@@ -159,29 +165,34 @@ const option = {
         show: true,
         title: '自定义工具',
         icon: getIconSrc('settings'),
-        onclick: function() {
+        onclick: function () {
           console.log('自定义工具被点击');
-        }
-      }
-    }
+        },
+      },
+    },
   },
 
   // 4. 在标记点中使用图标
-  series: [{
-    type: 'line',
-    data: [120, 200, 150, 80, 70, 110, 130],
-    markPoint: {
-      data: [{
-        type: 'max',
-        symbol: getIconSrc('arrowUp'),
-        symbolSize: 25
-      }, {
-        type: 'min',
-        symbol: getIconSrc('arrowDown'),
-        symbolSize: 25
-      }]
-    }
-  }]
+  series: [
+    {
+      type: 'line',
+      data: [120, 200, 150, 80, 70, 110, 130],
+      markPoint: {
+        data: [
+          {
+            type: 'max',
+            symbol: getIconSrc('arrowUp'),
+            symbolSize: 25,
+          },
+          {
+            type: 'min',
+            symbol: getIconSrc('arrowDown'),
+            symbolSize: 25,
+          },
+        ],
+      },
+    },
+  ],
 };
 
 // 初始化图表

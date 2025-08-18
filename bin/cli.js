@@ -135,7 +135,8 @@ async function buildIcons() {
       .map((d) => `export declare const ${d.camelCaseName}: string;`)
       .join('\n');
 
-    const { jsContent: utilityFunctions, dtsContent: utilityFunctionTypes } = generateUtilityFunctions();
+    const { jsContent: utilityFunctions, dtsContent: utilityFunctionTypes } =
+      generateUtilityFunctions();
 
     const iconsJsContent = `// Tree-shakeable icon exports\n\n${iconsJsExports}\n\n// Utility functions\n${utilityFunctions}`;
     const iconsDtsContent = `// Type definitions for tree-shakeable icons\n\n${iconsDtsExports}\n\n// Utility function types\n${utilityFunctionTypes}`;
@@ -153,7 +154,8 @@ async function buildIcons() {
   }
 
   if (mode === 'all' || mode === 'full') {
-    const { jsContent: helpersJsContent, dtsContent: helpersDtsContent } = generateUtilityFunctions();
+    const { jsContent: helpersJsContent, dtsContent: helpersDtsContent } =
+      generateUtilityFunctions();
 
     filesToWrite.push({
       name: 'helpers.js',
