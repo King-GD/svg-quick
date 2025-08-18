@@ -65,13 +65,19 @@ my-project/
 
 **模式 (Mode) 详解:**
 
-- `treeshakeable` (`t`): **（推荐）** 只生成支持按需打包的独立导出。最终产物体積最小。
-- `full` (`f`): 只生成包含所有图标的全量对象和辅助函数。适用于需要动态获取图标的场景。
+- `treeshakeable` (`t`): **（推荐）** 生成支持按需打包的独立导出，同时包含实用工具函数 (`getIconData`, `getIconSrc`)。支持 Tree-shaking，最终产物体積最小。
+- `full` (`f`): 只生成包含所有图标的全量对象和实用工具函数 (`getIconData`, `getIconSrc`)。所有图标都会被打包，适用于需要在运行时动态访问大量图标的场景。
 - `all` (`a`): 同时生成以上两种模式的文件，提供最大灵活性。
+
+> **💡 提示**: 两种模式都包含相同的实用工具函数。区别在于：
+> - `treeshakeable` 模式：支持按需导入单个图标，打包工具只会包含你实际使用的图标
+> - `full` 模式：所有图标都会被打包到最终产物中，但提供了统一的 `icons` 对象用于动态访问
 
 ## 📖 产物使用示例 (Using the Output)
 
 当 `mode` 设置为 `treeshakeable` (推荐) 时，你可以这样使用：
+
+### 方式一：直接导入具体图标（推荐）
 
 ```javascript
 // 在你的 React / Vue / Svelte 组件中
@@ -93,7 +99,97 @@ const App = () => (
 );
 ```
 
-当打包工具构建你的应用时，只有被 `import` 的 `user` 和 `arrowLeft` 图标会被包含进来。
+### 方式二：使用实用工具函数
+
+```javascript
+// 导入实用工具函数，支持动态获取图标
+import { getIconData, getIconSrc } from '../generated-icons';
+
+// 获取 SVG 字符串
+const userIconSvg = getIconData('user');
+
+// 获取 base64 编码的 data URL，可直接用于 <img> 标签或 CSS background
+const userIconSrc = getIconSrc('user');
+
+// 在组件中使用
+const DynamicIcon = ({ iconName }) => {
+  const iconSrc = getIconSrc(iconName);
+  return iconSrc ? <img src={iconSrc} alt={iconName} /> : null;
+};
+
+// 或者在 CSS 中使用
+const iconUrl = getIconSrc('user');
+// background-image: url(data:image/svg+xml;base64,...)
+```
+
+### 方式三：在 ECharts 中使用图标
+
+```javascript
+// 导入 ECharts 和图标工具函数
+import * as echarts from 'echarts';
+import { getIconSrc } from '../generated-icons';
+
+// 在 ECharts 配置中使用图标
+const option = {
+  // 1. 在系列数据中使用图标作为 symbol
+  series: [{
+    type: 'scatter',
+    data: [
+      { value: [10, 20], symbol: getIconSrc('user') },
+      { value: [30, 40], symbol: getIconSrc('star') },
+    ],
+    symbolSize: 30
+  }],
+
+  // 2. 在图例中使用自定义图标
+  legend: {
+    data: [{
+      name: '用户数据',
+      icon: getIconSrc('user')
+    }, {
+      name: '收藏数据',
+      icon: getIconSrc('star')
+    }]
+  },
+
+  // 3. 在工具箱中使用自定义图标
+  toolbox: {
+    feature: {
+      myTool: {
+        show: true,
+        title: '自定义工具',
+        icon: getIconSrc('settings'),
+        onclick: function() {
+          console.log('自定义工具被点击');
+        }
+      }
+    }
+  },
+
+  // 4. 在标记点中使用图标
+  series: [{
+    type: 'line',
+    data: [120, 200, 150, 80, 70, 110, 130],
+    markPoint: {
+      data: [{
+        type: 'max',
+        symbol: getIconSrc('arrowUp'),
+        symbolSize: 25
+      }, {
+        type: 'min',
+        symbol: getIconSrc('arrowDown'),
+        symbolSize: 25
+      }]
+    }
+  }]
+};
+
+// 初始化图表
+const chart = echarts.init(document.getElementById('chart'));
+chart.setOption(option);
+```
+
+当打包工具构建你的应用时，只有被 `import` 的图标和函数会被包含进来，实现完美的按需打包。
 
 ## 📄 许可证 (License)
 
